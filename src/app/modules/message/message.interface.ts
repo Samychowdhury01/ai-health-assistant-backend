@@ -6,3 +6,4 @@ export type TMessage = {
   answer: string;
   conversationId: Types.ObjectId;
 };
+

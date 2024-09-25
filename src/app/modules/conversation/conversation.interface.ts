@@ -4,3 +4,4 @@ export type TConversation = {
   userId: Types.ObjectId;
   messages?: Types.ObjectId[];
 };
+
