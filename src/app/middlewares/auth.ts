@@ -35,7 +35,7 @@ const auth = (...requireRoles: TUserRole[]) => {
     const { userId, role } = decoded as JwtPayload;
 
     // check if the user is deleted or not
-    const user = await User.isUserExist(userId);
+    const user = await User.findById(userId);
     if (!user) {
       return sendResponse(res, {
         success: false,

@@ -12,6 +12,8 @@ const getUserConversationFromDB = async (userId: string) => {
   }
   const result = await Conversation.find({
     userId,
+  }).populate({
+    path: 'messages',
   });
   return result;
 };
@@ -39,12 +41,28 @@ const updateConversationFromDB = async (id: string, payload: string) => {
       new: true,
     },
   );
-  console.log(result);
+
   return result;
 };
 
+const getSingleConversationFromDB = async (id: string, userId: string) => {
+  console.log(userId);
+  const user = await User.findById(userId);
+  console.log(user);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  const conversation = await Conversation.findById(id).populate({
+    path: 'messages',
+  });
+  if (!conversation) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Conversation not found');
+  }
+  return conversation;
+};
 export const ConversationServices = {
   getUserConversationFromDB,
   createConversationIntoDB,
   updateConversationFromDB,
+  getSingleConversationFromDB
 };

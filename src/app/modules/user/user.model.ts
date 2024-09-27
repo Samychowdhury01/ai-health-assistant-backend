@@ -36,6 +36,7 @@ const userSchema = new Schema<TUser, IUserModel>(
     },
     isDiabetes: {
       type: Boolean,
+      default: false,
     },
     isPregnant: {
       type: Boolean,

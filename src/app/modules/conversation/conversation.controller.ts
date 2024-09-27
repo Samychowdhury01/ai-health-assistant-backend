@@ -14,10 +14,27 @@ const getUserConversation = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const getSingleConversation = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { userId } = req.user;
+    console.log(userId);
+    const result = await ConversationServices.getSingleConversationFromDB(
+      id,
+      userId,
+    );
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Message list fetched successfully',
+      data: result,
+    });
+  },
+);
 
 const createConversation = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.body;
-  const result = await ConversationServices.createConversationIntoDB(userId);
+  const payload = req.body;
+  const result = await ConversationServices.createConversationIntoDB(payload);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -27,8 +44,8 @@ const createConversation = catchAsync(async (req: Request, res: Response) => {
 });
 const updateConversation = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const {messageId} = req.body;
-  console.log(messageId);
+  const { messageId } = req.body;
+
   const result = await ConversationServices.updateConversationFromDB(
     id,
     messageId,
@@ -44,4 +61,5 @@ export const ConversationControllers = {
   getUserConversation,
   createConversation,
   updateConversation,
+  getSingleConversation,
 };
