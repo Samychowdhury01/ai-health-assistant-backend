@@ -38,13 +38,12 @@ const updateUserProfileFromDB = async (userId: string, payload: TUser) => {
     return value !== undefined && value !== null; // Count if value is not undefined or null
   }).length;
 
-  console.log(completedFields, payload, fields.length);
   const profileCompleteStatus = (completedFields / fields.length) * 100;
   const updatedData = {
     ...payload,
     profileCompleteStatus,
   };
-  console.log(updatedData, 'update');
+
   const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
     new: true,
   });
