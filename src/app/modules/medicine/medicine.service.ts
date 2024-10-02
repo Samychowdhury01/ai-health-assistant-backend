@@ -3,12 +3,14 @@ import AppError from '../../errors/AppError';
 import { User } from '../user/user.model';
 import { TMedicine } from './medicine.interface';
 import { Medicine } from './medicine.model';
+import { scheduleMedicineAlarms } from './medicine.utils';
 
 const addMedicineIntoDB = async (payload: TMedicine) => {
   const result = await Medicine.create(payload);
+  // Schedule alarms for the added medicine
+  scheduleMedicineAlarms(result);
   return result;
 };
-
 const getUserMedicinesFromDB = async (userId: string) => {
   const user = await User.findById(userId);
 

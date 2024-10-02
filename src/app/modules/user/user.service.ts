@@ -49,8 +49,34 @@ const updateUserProfileFromDB = async (userId: string, payload: TUser) => {
   });
   return updatedUser;
 };
+
+const promoteUserFromDB = async (userId: string) => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    { role: 'admin' },
+    { new: true },
+  );
+  return updatedUser;
+};
+
+const getUserActivitiesFrom = async () => {
+  const users = await User.find({});
+  const profileCompletedUsers = await User.find({
+    profileCompleteStatus: { $eq: 100 },
+  });
+
+  const totalPercentageOfCompleted =
+    (profileCompletedUsers.length / users.length) * 100;
+  return totalPercentageOfCompleted;
+};
 export const UserServices = {
   getAllUsersFromDB,
   getUserProfileFromDB,
   updateUserProfileFromDB,
+  promoteUserFromDB,
+  getUserActivitiesFrom,
 };

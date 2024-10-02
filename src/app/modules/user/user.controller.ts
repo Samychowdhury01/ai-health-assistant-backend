@@ -39,8 +39,31 @@ const updateUserProfile = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+const promoteUser = catchAsync(async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  const result = await UserServices.promoteUserFromDB(userId);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User promoted successfully',
+    data: result,
+  });
+});
+
+const getUserActivities = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserServices.getUserActivitiesFrom();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User activities fetched successfully',
+    data: result,
+  });
+});
 export const UserControllers = {
   getAllUsers,
   getUserProfile,
   updateUserProfile,
+  promoteUser,
+  getUserActivities
 };

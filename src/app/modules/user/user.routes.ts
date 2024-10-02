@@ -17,4 +17,8 @@ router.put(
   UserControllers.updateUserProfile,
 );
 
+router.put('/:userId', auth(USER_ROLE.admin), UserControllers.promoteUser);
+
+router.get('/activities',  UserControllers.getUserActivities)
 export const UserRoutes = router;
+
