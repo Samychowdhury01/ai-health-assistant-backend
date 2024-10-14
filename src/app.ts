@@ -3,9 +3,15 @@ import cors from 'cors';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import notFound from './app/middlewares/notFound';
 import router from './app/routes';
+import config from './app/config';
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: config.frontend_url as string,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  }),
+);
 app.use(express.json());
 
 app.use('/api', router);

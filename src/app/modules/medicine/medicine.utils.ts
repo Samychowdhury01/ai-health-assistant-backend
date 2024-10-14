@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // import cron from 'node-cron'; // Import node-cron
 // import { TMedicine } from './medicine.interface';
 // import { io } from '../../../server';

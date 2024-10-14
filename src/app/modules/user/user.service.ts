@@ -64,14 +64,20 @@ const promoteUserFromDB = async (userId: string) => {
 };
 
 const getUserActivitiesFrom = async () => {
-  const users = await User.find({});
+  const users = await User.find({}).sort({
+    createdAt: -1,
+  });
   const profileCompletedUsers = await User.find({
     profileCompleteStatus: { $eq: 100 },
   });
 
   const totalPercentageOfCompleted =
     (profileCompletedUsers.length / users.length) * 100;
-  return totalPercentageOfCompleted;
+
+  return {
+    totalPercentageOfCompleted,
+    users,
+  };
 };
 export const UserServices = {
   getAllUsersFromDB,
