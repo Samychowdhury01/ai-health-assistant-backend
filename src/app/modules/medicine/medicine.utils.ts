@@ -81,8 +81,11 @@ export const scheduleMedicineAlarms = (medicine: TMedicine) => {
         });
       }
     }
+
+    // Schedule the next check after 1 minute
+    setTimeout(checkMedicineAlarm, 60000); // 60000 milliseconds = 1 minute
   };
 
-  // Run the check every minute
-  setInterval(checkMedicineAlarm, 60000); // 60000 milliseconds = 1 minute
+  // Start the first check
+  checkMedicineAlarm();
 };
