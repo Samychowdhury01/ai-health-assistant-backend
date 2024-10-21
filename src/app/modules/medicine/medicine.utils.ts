@@ -46,7 +46,6 @@
 // ------------
 
 // using setInterval
-
 import { TMedicine, TDays } from './medicine.interface'; // Import TDays for type safety
 import { io } from '../../../server';
 
@@ -63,29 +62,35 @@ export const scheduleMedicineAlarms = (medicine: TMedicine) => {
 
   // Function to check if today is a scheduled day and if the time matches
   const checkMedicineAlarm = () => {
-    const now = new Date();
-    const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-    const currentHour = now.getHours();
-    const currentMinute = now.getMinutes();
+    console.log('from check medicine function');
+    try {
+      const now = new Date();
+      const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+      const currentHour = now.getUTCHours(); // Use UTC hours
+      const currentMinute = now.getUTCMinutes(); // Use UTC minutes
 
-    // Check if today is a scheduled day
-    if (days.includes(getDayName(currentDay))) {
-      // Check if the current time matches the alarm time
-      if (currentHour === hour && currentMinute === minute) {
-        console.log(`Scheduled alarm for ${name} at ${time} on ${getDayName(currentDay)}`);
-        // Emit alarm event to the frontend through Socket.IO
-        io.to(userId.toString()).emit('medicine-alarm', {
-          message: `It's time to take your medicine: ${name}`,
-          time,
-          day: getDayName(currentDay),
-        });
+      // Check if today is a scheduled day
+      if (days.includes(getDayName(currentDay))) {
+        // Check if the current time matches the alarm time
+        if (currentHour === hour && currentMinute === minute) {
+          console.log(`Scheduled alarm for ${name} at ${time} on ${getDayName(currentDay)}`);
+          // Emit alarm event to the frontend through Socket.IO
+          io.to(userId.toString()).emit('medicine-alarm', {
+            message: `It's time to take your medicine: ${name}`,
+            time,
+            day: getDayName(currentDay),
+          });
+        }
       }
+    } catch (error) {
+      console.error('Error in checkMedicineAlarm:', error);
     }
-
-    // Schedule the next check after 1 minute
-    setTimeout(checkMedicineAlarm, 60000); // 60000 milliseconds = 1 minute
   };
 
-  // Start the first check
-  checkMedicineAlarm();
+  // Run the check every minute
+  setInterval(checkMedicineAlarm, 30000); // 60000 milliseconds = 1 minute
 };
+
+
+// 
+
