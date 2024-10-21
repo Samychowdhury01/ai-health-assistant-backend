@@ -8,7 +8,8 @@ import { Server } from 'socket.io';
 const httpServer = createServer(app);
 export const io = new Server(httpServer, {
   cors: {
-    origin: config.frontend_url as string,
+    origin: "*",
+    // origin: config.frontend_url as string,
   },
 });
 
