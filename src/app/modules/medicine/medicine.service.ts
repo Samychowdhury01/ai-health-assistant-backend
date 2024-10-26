@@ -19,7 +19,9 @@ const getUserMedicinesFromDB = async (userId: string) => {
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
-  const medicines = await Medicine.find({ userId });
+  const medicines = await Medicine.find({ userId }).sort({
+    createdAt: -1,
+  });
 
   return medicines;
 };
