@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import cron from 'node-cron';
 import moment from 'moment-timezone';
 import { TMedicine } from './medicine.interface';
@@ -6,7 +7,7 @@ import { io } from '../../../server';
 // Set Bangladesh Time Zone
 const BD_TIMEZONE = 'Asia/Dhaka';
 
-export const scheduleMedicineAlarms = (medicine: TMedicine) => {
+export const scheduleMedicineAlarms = (medicine: TMedicine, email: string) => {
   const { time, days, name, userId } = medicine;
 
   // Convert the time to Bangladesh time zone
